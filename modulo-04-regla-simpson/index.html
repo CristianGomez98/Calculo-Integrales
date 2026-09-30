@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 04 · Regla de Simpson · Cálculo Integral</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<!-- KaTeX listo para renderizar fórmulas cuando se desarrolle el contenido -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/js/metodos-numericos.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <span class="brand">Cálculo Integral</span>
+    <span class="dept">Universidad Tecnológica de Pereira · Departamento de Matemáticas</span>
+  </div>
+</header>
+
+<div class="wrap module-page">
+  <a class="back-link" href="../index.html">← Volver al índice de módulos</a>
+  <div class="eyebrow">Módulo 04 · Fase 1 · Métodos numéricos</div>
+  <h1>Regla de Simpson</h1>
+
+  <section>
+    <h2 class="section-title">Fundamento teórico</h2>
+    <p>En lugar de aproximar $f$ con líneas rectas (trapecio), la regla de Simpson ajusta una <strong>parábola</strong> a cada grupo de 3 puntos consecutivos. Como una parábola necesita 3 puntos (2 subintervalos), $n$ debe ser <strong>par</strong>.</p>
+    <div class="formula-box">
+      $$\int_a^b f(x)\,dx \approx \frac{h}{3}\Big[f(x_0)+4\!\!\sum_{i\ \text{impar}}\!\!f(x_i)+2\!\!\sum_{i\ \text{par},\,i\ne 0,n}\!\!f(x_i)+f(x_n)\Big]$$
+    </div>
+    <p><strong>Condición:</strong> $n$ debe ser par (si el visualizador recibe un valor impar, lo ajusta automáticamente a $n+1$).</p>
+    <p class="note">Simpson integra <em>exactamente</em> cualquier polinomio de grado $\le 3$ — por eso, para funciones suaves, converge mucho más rápido que el trapecio o el punto medio con el mismo número de subdivisiones.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Visualizador interactivo</h2>
+    <p>Cada color muestra la parábola ajustada sobre un par de subintervalos. Nota que $n$ solo puede tomar valores pares.</p>
+
+    <div class="visualizer-controls">
+      <label>Función
+        <select id="s-fn-select">
+          <option value="sqrt" selected>f(x) = √x</option>
+          <option value="poly">f(x) = x² + 1</option>
+          <option value="sin">f(x) = sin(x) + 2</option>
+          <option value="rational">f(x) = 1 / (1 + x²)</option>
+        </select>
+      </label>
+      <label>a <input type="number" id="s-a-input" value="0" step="0.5"></label>
+      <label>b <input type="number" id="s-b-input" value="4" step="0.5"></label>
+      <label>n = <span id="s-n-value">4</span>
+        <input type="range" id="s-n-slider" min="2" max="30" step="2" value="4">
+      </label>
+    </div>
+
+    <div id="s-plot" class="plot"></div>
+
+    <div class="visualizer-output">
+      <span>Aproximación: <strong id="s-approx-value">-</strong></span>
+      <span>Valor exacto: <strong id="s-exact-value">-</strong></span>
+      <span>Error absoluto: <strong id="s-error-value">-</strong></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Ejemplos resueltos</h2>
+
+    <div class="example-block">
+      <h3>Ejemplo 1 — f(x) = x² + 1 en [0, 4]</h3>
+      <p>Aproximar $\displaystyle\int_0^4 x^2\,dx$ con $n=4$ (mismo caso de los módulos 1 y 3, para comparar los tres métodos).</p>
+      <div class="step"><span class="step-label">Paso 1 — Nodos y evaluaciones</span>
+        $$x{:}\ 0,1,2,3,4 \qquad f(x){:}\ 0,1,4,9,16$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Aplicar la fórmula ($h=1$)</span>
+        $$S=\frac{1}{3}\big[0+4(1)+2(4)+4(9)+16\big]=\frac{1}{3}(64)=21.333$$</div>
+      <p class="note"><strong>¡Coincide exactamente con el valor real ($21.333$)!</strong> Esto confirma la propiedad teórica: Simpson es exacta para polinomios de grado $\le 3$ (y $x^2$ cumple esa condición).</p>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 2 — f(x) = 1/x en [1, 3]</h3>
+      <p>Mismo caso de los módulos 2 y 3, con $n=4$, para comparar los tres métodos numéricos.</p>
+      <div class="step"><span class="step-label">Paso 1 — Nodos y evaluaciones</span>
+        $$x{:}\ 1,1.5,2,2.5,3 \qquad f(x){:}\ 1,\,0.6667,\,0.5,\,0.4,\,0.3333$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Aplicar la fórmula ($h=0.5$)</span>
+        $$S=\frac{0.5}{3}\big[1+4(0.6667)+2(0.5)+4(0.4)+0.3333\big]\approx 1.1$$</div>
+      <p class="note">Valor exacto: $\ln 3\approx 1.0986$. Error $\approx 0.0014$ — notablemente mejor que el trapecio (0.018) y el punto medio (0.009) con el mismo $n=4$. Esta comparación resume por qué Simpson es, en general, el método más eficiente de los cuatro.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initVisualizer({ prefix: 's-', methodType: 'simpson', hasMode: false, plotId: 's-plot' });
+  });
+</script>
+
+<footer class="site-footer"><div class="wrap">Proyecto académico · Desarrollo de Software · Fase 1</div></footer>
+</body>
+</html>

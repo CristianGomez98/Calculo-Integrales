@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 05 · Integral Definida / Área bajo la Curva · Cálculo Integral</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<!-- KaTeX listo para renderizar fórmulas cuando se desarrolle el contenido -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/js/metodos-numericos.js"></script>
+<script src="../assets/js/integracion-directa.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <span class="brand">Cálculo Integral</span>
+    <span class="dept">Universidad Tecnológica de Pereira · Departamento de Matemáticas</span>
+  </div>
+</header>
+
+<div class="wrap module-page">
+  <a class="back-link" href="../index.html">← Volver al índice de módulos</a>
+  <div class="eyebrow">Módulo 05 · Fase 1 · Área e integración directa</div>
+  <h1>Integral Definida / Área bajo la Curva</h1>
+
+  <section>
+    <h2 class="section-title">Fundamento teórico — Teorema Fundamental del Cálculo</h2>
+    <p>El teorema fundamental del cálculo conecta dos ideas que parecen distintas: la <strong>derivada</strong> (razón de cambio) y la <strong>integral</strong> (área acumulada). Dice lo siguiente:</p>
+    <div class="formula-box">
+      $$\text{Si } F \text{ es una antiderivada de } f \text{ en } [a,b], \quad \int_a^b f(x)\,dx = F(b)-F(a)$$
+    </div>
+    <p>En palabras simples: para calcular el área exacta bajo una curva, <strong>no</strong> hace falta sumar infinitos rectángulos (como en los módulos 1-4) — basta con encontrar una función $F$ cuya derivada sea $f$, y evaluarla en los dos extremos del intervalo.</p>
+    <p><strong>Área entre dos curvas:</strong> si $f(x)\ge g(x)$ en todo el intervalo $[a,b]$, el área encerrada entre ambas es:</p>
+    <div class="formula-box">
+      $$\text{Área} = \int_a^b \big[f(x)-g(x)\big]\,dx$$
+    </div>
+    <p class="note">Los límites $a$ y $b$ suelen ser los puntos donde las curvas se cruzan, es decir, donde $f(x)=g(x)$.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Visualizador interactivo</h2>
+    <p>Ajusta la función y el intervalo $[a,b]$ para ver el área sombreada bajo la curva, o activa la casilla para ver un ejemplo interactivo de área entre dos curvas.</p>
+
+    <div class="visualizer-controls" id="a5-single-controls">
+      <label>Función
+        <select id="a5-fn-select">
+          <option value="poly" selected>f(x) = x² + 1</option>
+          <option value="sin">f(x) = sin(x) + 2</option>
+          <option value="sqrt">f(x) = √x</option>
+          <option value="rational">f(x) = 1 / (1 + x²)</option>
+        </select>
+      </label>
+      <label>a <input type="number" id="a5-a-input" value="1" step="0.5"></label>
+      <label>b <input type="number" id="a5-b-input" value="3" step="0.5"></label>
+    </div>
+
+    <div class="visualizer-controls">
+      <label style="flex-direction:row; align-items:center; gap:8px;">
+        <input type="checkbox" id="a5-between-checkbox" style="width:auto;">
+        Ver ejemplo de área entre dos curvas (f(x)=x+2 y g(x)=x²)
+      </label>
+    </div>
+
+    <div id="a5-plot" class="plot"></div>
+
+    <div class="visualizer-output">
+      <span>Área calculada (TFC): <strong id="a5-area-value">-</strong></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Ejemplos resueltos</h2>
+
+    <div class="example-block">
+      <h3>Ejemplo 1 — Área bajo una curva</h3>
+      <p>Calcular el área bajo $f(x) = x^2+1$ en el intervalo $[1,3]$ (mismo caso que trae el visualizador por defecto).</p>
+      <div class="step"><span class="step-label">Paso 1 — Encontrar la antiderivada</span>
+        $$F(x) = \frac{x^3}{3}+x$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Evaluar en los extremos</span>
+        $$F(3)=\frac{27}{3}+3=12 \qquad F(1)=\frac{1}{3}+1=\frac{4}{3}$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Aplicar el TFC</span>
+        $$\int_1^3 (x^2+1)\,dx = F(3)-F(1)=12-\frac{4}{3}=\frac{32}{3}\approx 10.667$$</div>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 2 — Área entre dos curvas</h3>
+      <p>Calcular el área encerrada entre $f(x)=x+2$ y $g(x)=x^2$ (el mismo par que muestra la casilla del visualizador).</p>
+      <div class="step"><span class="step-label">Paso 1 — Encontrar los puntos de intersección</span>
+        $$x^2 = x+2 \ \Rightarrow\ x^2-x-2=0 \ \Rightarrow\ (x-2)(x+1)=0 \ \Rightarrow\ x=-1,\ x=2$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Plantear la integral (¿quién está arriba?)</span>
+        <p class="note" style="margin-top:2px">Entre $x=-1$ y $x=2$, la recta $x+2$ queda por encima de la parábola $x^2$.</p>
+        $$\text{Área}=\int_{-1}^{2}\big[(x+2)-x^2\big]\,dx$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Antiderivada y evaluación</span>
+        $$F(x)=\frac{x^2}{2}+2x-\frac{x^3}{3}$$
+        $$F(2)=2+4-\frac{8}{3}=\frac{10}{3} \qquad F(-1)=\frac12-2+\frac13=-\frac{7}{6}$$</div>
+      <div class="step"><span class="step-label">Paso 4 — Restar</span>
+        $$\text{Área}=\frac{10}{3}-\left(-\frac{7}{6}\right)=\frac{20}{6}+\frac{7}{6}=\frac{27}{6}=4.5$$</div>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initAreaVisualizer({ prefix: 'a5-', plotId: 'a5-plot' });
+  });
+</script>
+
+<footer class="site-footer"><div class="wrap">Proyecto académico · Desarrollo de Software · Fase 1</div></footer>
+</body>
+</html>

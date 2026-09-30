@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 02 · Regla del Trapecio · Cálculo Integral</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<!-- KaTeX listo para renderizar fórmulas cuando se desarrolle el contenido -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/js/metodos-numericos.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <span class="brand">Cálculo Integral</span>
+    <span class="dept">Universidad Tecnológica de Pereira · Departamento de Matemáticas</span>
+  </div>
+</header>
+
+<div class="wrap module-page">
+  <a class="back-link" href="../index.html">← Volver al índice de módulos</a>
+  <div class="eyebrow">Módulo 02 · Fase 1 · Métodos numéricos</div>
+  <h1>Regla del Trapecio</h1>
+
+  <section>
+    <h2 class="section-title">Fundamento teórico</h2>
+    <p>En vez de aproximar cada franja con un rectángulo, la regla del trapecio une los extremos $f(x_i)$ y $f(x_{i+1})$ con una línea recta, formando un trapecio. Esto suele ajustarse mejor a la curva que un rectángulo.</p>
+    <div class="formula-box">
+      $$\int_a^b f(x)\,dx \approx \frac{h}{2}\left[f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n)\right], \qquad h=\frac{b-a}{n}$$
+    </div>
+    <p><strong>Justificación geométrica:</strong> el área de un trapecio con bases $f(x_i)$, $f(x_{i+1})$ y altura $h$ es $\frac{h}{2}\big[f(x_i)+f(x_{i+1})\big]$. Al sumar los $n$ trapecios, cada punto interior $f(x_i)$ ($1\le i\le n-1$) se comparte entre dos trapecios consecutivos, por eso aparece multiplicado por 2.</p>
+    <p class="note">La regla del trapecio es exacta para funciones lineales, y sobrestima el área cuando $f$ es cóncava hacia arriba (convexa), y la subestima cuando es cóncava hacia abajo.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Visualizador interactivo</h2>
+    <p>Ajusta la función, el intervalo y $n$ para ver cómo los trapecios se ajustan a la curva y cómo disminuye el error.</p>
+
+    <div class="visualizer-controls">
+      <label>Función
+        <select id="t-fn-select">
+          <option value="sin" selected>f(x) = sin(x) + 2</option>
+          <option value="poly">f(x) = x² + 1</option>
+          <option value="sqrt">f(x) = √x</option>
+          <option value="rational">f(x) = 1 / (1 + x²)</option>
+        </select>
+      </label>
+      <label>a <input type="number" id="t-a-input" value="0" step="0.5"></label>
+      <label>b <input type="number" id="t-b-input" value="3.1416" step="0.5"></label>
+      <label>n = <span id="t-n-value">6</span>
+        <input type="range" id="t-n-slider" min="2" max="30" step="1" value="6">
+      </label>
+    </div>
+
+    <div id="t-plot" class="plot"></div>
+
+    <div class="visualizer-output">
+      <span>Aproximación: <strong id="t-approx-value">-</strong></span>
+      <span>Valor exacto: <strong id="t-exact-value">-</strong></span>
+      <span>Error absoluto: <strong id="t-error-value">-</strong></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Ejemplos resueltos</h2>
+
+    <div class="example-block">
+      <h3>Ejemplo 1 — f(x) = 1/x en [1, 3]</h3>
+      <p>Aproximar $\displaystyle\int_1^3 \frac{1}{x}\,dx$ con $n=4$.</p>
+      <div class="step"><span class="step-label">Paso 1 — Ancho de subintervalo</span>
+        $$h=\frac{3-1}{4}=0.5$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Nodos y evaluaciones</span>
+        $$x_0{=}1,\,x_1{=}1.5,\,x_2{=}2,\,x_3{=}2.5,\,x_4{=}3$$
+        $$f(x_0){=}1,\ f(x_1){=}0.6667,\ f(x_2){=}0.5,\ f(x_3){=}0.4,\ f(x_4){=}0.3333$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Aplicar la fórmula</span>
+        $$T=\frac{0.5}{2}\big[1+2(0.6667+0.5+0.4)+0.3333\big]=1.1167$$</div>
+      <p class="note">Valor exacto: $\ln 3 \approx 1.0986$. Error absoluto $\approx 0.018$.</p>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 2 — f(x) = x³ en [0, 2]</h3>
+      <p>Aproximar $\displaystyle\int_0^2 x^3\,dx$ con $n=4$.</p>
+      <div class="step"><span class="step-label">Paso 1 — Nodos y evaluaciones</span>
+        $$x{:}\ 0,\,0.5,\,1,\,1.5,\,2 \qquad f(x){:}\ 0,\,0.125,\,1,\,3.375,\,8$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Aplicar la fórmula</span>
+        $$T=\frac{0.5}{2}\big[0+2(0.125+1+3.375)+8\big]=4.25$$</div>
+      <p class="note">Valor exacto: $\int_0^2 x^3\,dx = 4$. Como $x^3$ es convexa en $[0,2]$, el trapecio sobrestima (4.25 &gt; 4), tal como predice la teoría.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initVisualizer({ prefix: 't-', methodType: 'trapezoid', hasMode: false, plotId: 't-plot' });
+  });
+</script>
+
+<footer class="site-footer"><div class="wrap">Proyecto académico · Desarrollo de Software · Fase 1</div></footer>
+</body>
+</html>

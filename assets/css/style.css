@@ -1,0 +1,295 @@
+/* =========================================================
+   Plataforma de Cálculo Integral — Sistema de diseño
+   ========================================================= */
+
+:root {
+  --paper:      #F3F1E7;
+  --paper-2:    #EAE6D6;
+  --ink:        #1F2A24;
+  --ink-soft:   #52594F;
+  --teal:       #0F5C52;
+  --teal-dark:  #0B4038;
+  --gold:       #C99A2E;
+  --border:     #DAD5C3;
+  --white:      #FFFDF8;
+
+  --font-display: 'Lora', Georgia, serif;
+  --font-body:    'Inter', -apple-system, sans-serif;
+
+  --max-width: 880px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--teal-dark); }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Encabezado institucional ---------- */
+.site-header {
+  background: var(--teal);
+  color: var(--white);
+  padding: 14px 0;
+  border-bottom: 3px solid var(--gold);
+}
+.site-header .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.site-header .brand {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.site-header .dept {
+  font-size: 0.85rem;
+  color: #D9EFE9;
+}
+
+/* ---------- Portada / hero ---------- */
+.hero {
+  padding: 56px 0 28px;
+  border-bottom: 1px solid var(--border);
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.hero p {
+  max-width: 60ch;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* ---------- Bloques de fase (índice tipo syllabus) ---------- */
+.phase {
+  padding: 36px 0;
+  border-bottom: 1px solid var(--border);
+}
+.phase-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.phase-head h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin: 0;
+}
+.phase-tag {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.phase-tag.disponible { background: #DCEEE8; color: var(--teal-dark); }
+.phase-tag.pronto     { background: var(--paper-2); color: var(--ink-soft); }
+
+.module-list { list-style: none; margin: 0; padding: 0; }
+
+.module-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 4px;
+  border-top: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+.module-item:first-child { border-top: none; }
+.module-item:hover { background: var(--paper-2); }
+
+.module-num {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--gold);
+  width: 28px;
+  flex-shrink: 0;
+}
+.module-name {
+  flex: 1;
+  font-weight: 500;
+}
+.module-status {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+.module-item.locked {
+  color: var(--ink-soft);
+  cursor: default;
+}
+.module-item.locked:hover { background: transparent; }
+.module-item.locked .module-num { color: var(--ink-soft); opacity: 0.6; }
+
+/* ---------- Página interna de módulo ---------- */
+.module-page {
+  padding: 48px 0 80px;
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 28px;
+  font-size: 0.92rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+.back-link:hover { color: var(--teal-dark); }
+
+.module-page h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  margin: 0 0 8px;
+}
+.module-page .eyebrow {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.placeholder-box {
+  margin-top: 32px;
+  padding: 32px;
+  background: var(--white);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  color: var(--ink-soft);
+}
+.placeholder-box strong { color: var(--ink); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding: 28px 0 40px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+/* ---------- Contenido de módulo: teoría, visualizador, ejemplos ---------- */
+.module-page section { margin-top: 44px; }
+.module-page h2.section-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.formula-box {
+  background: var(--white);
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.note {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+/* Visualizador */
+.visualizer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.visualizer-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.visualizer-controls select,
+.visualizer-controls input[type="number"] {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.visualizer-controls input[type="range"] { width: 160px; }
+
+.plot {
+  width: 100%;
+  height: 380px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.visualizer-output {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin-top: 14px;
+  padding: 14px 18px;
+  background: var(--paper-2);
+  border-radius: 6px;
+  font-size: 0.92rem;
+}
+.visualizer-output strong { color: var(--teal-dark); }
+
+/* Ejemplos resueltos */
+.example-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 26px;
+  margin-bottom: 20px;
+}
+.example-block h3 {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  margin: 0 0 12px;
+  color: var(--teal-dark);
+}
+.example-block .step { margin: 10px 0; }
+.example-block .step-label {
+  font-size: 0.8rem;
+  text-transform: none;
+  color: var(--gold);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .hero h1 { font-size: 2rem; }
+  .site-header .wrap { flex-direction: column; gap: 2px; }
+  .module-item { gap: 12px; }
+}

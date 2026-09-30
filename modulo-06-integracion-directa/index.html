@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 06 · Integración Directa · Cálculo Integral</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<!-- KaTeX listo para renderizar fórmulas cuando se desarrolle el contenido -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/js/metodos-numericos.js"></script>
+<script src="../assets/js/integracion-directa.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <span class="brand">Cálculo Integral</span>
+    <span class="dept">Universidad Tecnológica de Pereira · Departamento de Matemáticas</span>
+  </div>
+</header>
+
+<div class="wrap module-page">
+  <a class="back-link" href="../index.html">← Volver al índice de módulos</a>
+  <div class="eyebrow">Módulo 06 · Fase 1 · Área e integración directa</div>
+  <h1>Integración Directa</h1>
+
+  <section>
+    <h2 class="section-title">Fórmulas básicas de integración</h2>
+    <p>La integración directa consiste en reconocer que una función es la derivada de otra ya conocida, y "deshacer" esa derivada. Estas son las reglas básicas (todas se pueden comprobar derivando el lado derecho):</p>
+    <div class="formula-box">
+      $$\int x^n\,dx = \frac{x^{n+1}}{n+1}+C \ \ (n\ne -1) \qquad\qquad \int \frac{1}{x}\,dx = \ln|x|+C$$
+      $$\int e^x\,dx = e^x+C \qquad\qquad \int \cos x\,dx = \sin x+C \qquad\qquad \int \sin x\,dx = -\cos x+C$$
+      $$\int k\,dx = kx+C \qquad\qquad \int \big[a\,f(x)+b\,g(x)\big]dx = a\!\int\! f(x)\,dx + b\!\int\! g(x)\,dx$$
+    </div>
+    <p class="note">La última fórmula (linealidad) es la que permite integrar término por término: se integra cada parte de una suma por separado.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Visualizador interactivo: f(x) y su antiderivada F(x)</h2>
+    <p>Elige una función y observa, en el mismo plano, cómo se relaciona con su antiderivada.</p>
+
+    <div class="visualizer-controls">
+      <label>Función
+        <select id="a6-fn-select">
+          <option value="power" selected>f(x) = 3x²</option>
+          <option value="exp">f(x) = eˣ</option>
+          <option value="cos">f(x) = cos(x)</option>
+          <option value="invx">f(x) = 1/x (x &gt; 0)</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="a6-plot" class="plot"></div>
+    <p class="note">La línea teal es $f(x)$; la línea dorada es su antiderivada $F(x)$.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Ejemplos resueltos</h2>
+
+    <div class="example-block">
+      <h3>Ejemplo 1 — Regla de la potencia (término a término)</h3>
+      <p>Calcular $\displaystyle\int (4x^3-2x+7)\,dx$.</p>
+      <div class="step"><span class="step-label">Paso 1 — Separar por linealidad</span>
+        $$\int 4x^3\,dx - \int 2x\,dx + \int 7\,dx$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Aplicar la regla de la potencia a cada término</span>
+        $$4\cdot\frac{x^4}{4} - 2\cdot\frac{x^2}{2} + 7x$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Simplificar</span>
+        $$\int (4x^3-2x+7)\,dx = x^4-x^2+7x+C$$</div>
+      <p class="note">Comprobación: la derivada de $x^4-x^2+7x$ es $4x^3-2x+7$. ✓</p>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 2 — Función exponencial</h3>
+      <p>Calcular $\displaystyle\int (e^x+3)\,dx$.</p>
+      <div class="step"><span class="step-label">Paso 1 — Separar por linealidad</span>
+        $$\int e^x\,dx + \int 3\,dx$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Aplicar las fórmulas directas</span>
+        $$\int (e^x+3)\,dx = e^x+3x+C$$</div>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 3 — Funciones trigonométricas</h3>
+      <p>Calcular $\displaystyle\int (2\cos x - \sin x)\,dx$.</p>
+      <div class="step"><span class="step-label">Paso 1 — Separar por linealidad</span>
+        $$2\int \cos x\,dx - \int \sin x\,dx$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Aplicar las fórmulas directas</span>
+        $$2(\sin x) - (-\cos x)$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Simplificar</span>
+        $$\int (2\cos x - \sin x)\,dx = 2\sin x+\cos x+C$$</div>
+      <p class="note">Comprobación: la derivada de $2\sin x+\cos x$ es $2\cos x-\sin x$. ✓</p>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 4 — Función racional 1/x</h3>
+      <p>Calcular $\displaystyle\int \frac{5}{x}\,dx$ para $x&gt;0$.</p>
+      <div class="step"><span class="step-label">Paso 1 — Sacar la constante</span>
+        $$5\int \frac{1}{x}\,dx$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Aplicar la fórmula directa</span>
+        $$\int \frac{5}{x}\,dx = 5\ln|x|+C$$</div>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initAntiderivativeVisualizer({ prefix: 'a6-', plotId: 'a6-plot' });
+  });
+</script>
+
+<footer class="site-footer"><div class="wrap">Proyecto académico · Desarrollo de Software · Fase 1</div></footer>
+</body>
+</html>

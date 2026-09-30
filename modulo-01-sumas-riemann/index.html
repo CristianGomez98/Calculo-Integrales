@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 01 · Sumas de Riemann · Cálculo Integral</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<!-- KaTeX listo para renderizar fórmulas cuando se desarrolle el contenido -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/js/metodos-numericos.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <span class="brand">Cálculo Integral</span>
+    <span class="dept">Universidad Tecnológica de Pereira · Departamento de Matemáticas</span>
+  </div>
+</header>
+
+<div class="wrap module-page">
+  <a class="back-link" href="../index.html">← Volver al índice de módulos</a>
+  <div class="eyebrow">Módulo 01 · Fase 1 · Métodos numéricos</div>
+  <h1>Sumas de Riemann</h1>
+
+  <section>
+    <h2 class="section-title">Fundamento teórico</h2>
+    <p>La integral definida se define como un límite de sumas. Dividimos el intervalo $[a,b]$ en $n$ subintervalos de ancho $h=\frac{b-a}{n}$, evaluamos $f$ en un punto de cada subintervalo y sumamos las áreas de los rectángulos resultantes:</p>
+    <div class="formula-box">
+      $$\int_a^b f(x)\,dx \approx \sum_{i=1}^{n} f(x_i^*)\, h$$
+    </div>
+    <p>El punto de muestreo $x_i^*$ determina el <strong>tipo</strong> de suma:</p>
+    <ul>
+      <li><strong>Izquierda:</strong> $x_i^* = a+(i-1)h$ — tiende a subestimar si $f$ es creciente.</li>
+      <li><strong>Derecha:</strong> $x_i^* = a+ih$ — tiende a sobrestimar si $f$ es creciente.</li>
+      <li><strong>Punto medio:</strong> $x_i^* = a+\left(i-\tfrac12\right)h$ — suele ser la más precisa de las tres.</li>
+    </ul>
+    <p class="note">A medida que $n\to\infty$, las tres sumas convergen al mismo valor: la integral definida.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Visualizador interactivo</h2>
+    <p>Ajusta la función, el intervalo, el número de subdivisiones $n$ y el tipo de suma. Observa cómo el error respecto al valor exacto disminuye a medida que $n$ crece.</p>
+
+    <div class="visualizer-controls">
+      <label>Función
+        <select id="r1-fn-select">
+          <option value="poly" selected>f(x) = x² + 1</option>
+          <option value="sin">f(x) = sin(x) + 2</option>
+          <option value="sqrt">f(x) = √x</option>
+          <option value="rational">f(x) = 1 / (1 + x²)</option>
+        </select>
+      </label>
+      <label>a <input type="number" id="r1-a-input" value="0" step="0.5"></label>
+      <label>b <input type="number" id="r1-b-input" value="4" step="0.5"></label>
+      <label>n = <span id="r1-n-value">6</span>
+        <input type="range" id="r1-n-slider" min="2" max="30" step="1" value="6">
+      </label>
+      <label>Tipo de suma
+        <select id="r1-mode-select">
+          <option value="left">Izquierda</option>
+          <option value="right">Derecha</option>
+          <option value="midpoint" selected>Punto medio</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="r1-plot" class="plot"></div>
+
+    <div class="visualizer-output">
+      <span>Aproximación: <strong id="r1-approx-value">-</strong></span>
+      <span>Valor exacto: <strong id="r1-exact-value">-</strong></span>
+      <span>Error absoluto: <strong id="r1-error-value">-</strong></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Ejemplos resueltos</h2>
+
+    <div class="example-block">
+      <h3>Ejemplo 1 — Suma por la derecha</h3>
+      <p>Aproximar $\displaystyle\int_0^4 x^2\,dx$ usando $n=4$ rectángulos con puntos de la derecha.</p>
+      <div class="step"><span class="step-label">Paso 1 — Ancho de cada subintervalo</span>
+        $$h = \frac{4-0}{4} = 1$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Puntos de evaluación (derecha)</span>
+        $$x_1=1,\ x_2=2,\ x_3=3,\ x_4=4$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Evaluar $f(x)=x^2$</span>
+        $$f(1)=1,\ f(2)=4,\ f(3)=9,\ f(4)=16$$</div>
+      <div class="step"><span class="step-label">Paso 4 — Sumar</span>
+        $$S_{der} = (1+4+9+16)(1) = 30$$</div>
+      <p class="note">Valor exacto: $\int_0^4 x^2\,dx = \frac{64}{3}\approx 21.333$. Como $f$ es creciente, la suma derecha sobrestima el área real.</p>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 2 — Suma por la izquierda</h3>
+      <p>Misma integral y mismo $n=4$, ahora con puntos de la izquierda.</p>
+      <div class="step"><span class="step-label">Paso 1 — Puntos de evaluación (izquierda)</span>
+        $$x_0=0,\ x_1=1,\ x_2=2,\ x_3=3$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Evaluar $f(x)=x^2$</span>
+        $$f(0)=0,\ f(1)=1,\ f(2)=4,\ f(3)=9$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Sumar</span>
+        $$S_{izq} = (0+1+4+9)(1) = 14$$</div>
+      <p class="note">La suma izquierda (14) subestima, la derecha (30) sobrestima, y el valor exacto (21.33) queda entre ambas — exactamente el comportamiento que puedes comprobar moviendo el selector "Tipo de suma" en el visualizador de arriba.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initVisualizer({ prefix: 'r1-', methodType: 'riemann', hasMode: true, plotId: 'r1-plot' });
+  });
+</script>
+
+<footer class="site-footer"><div class="wrap">Proyecto académico · Desarrollo de Software · Fase 1</div></footer>
+</body>
+</html>

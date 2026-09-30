@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 03 · Regla del Punto Medio · Cálculo Integral</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<!-- KaTeX listo para renderizar fórmulas cuando se desarrolle el contenido -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/js/metodos-numericos.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <span class="brand">Cálculo Integral</span>
+    <span class="dept">Universidad Tecnológica de Pereira · Departamento de Matemáticas</span>
+  </div>
+</header>
+
+<div class="wrap module-page">
+  <a class="back-link" href="../index.html">← Volver al índice de módulos</a>
+  <div class="eyebrow">Módulo 03 · Fase 1 · Métodos numéricos</div>
+  <h1>Regla del Punto Medio</h1>
+
+  <section>
+    <h2 class="section-title">Fundamento teórico</h2>
+    <p>La regla del punto medio también usa rectángulos, pero evalúa $f$ exactamente en el <strong>centro</strong> de cada subintervalo. Esto compensa parcialmente la curvatura de $f$ dentro de la franja, por lo que suele ser más precisa que las sumas de izquierda o derecha.</p>
+    <div class="formula-box">
+      $$\int_a^b f(x)\,dx \approx h\sum_{i=1}^{n} f(m_i), \qquad m_i = a+\left(i-\tfrac12\right)h,\quad h=\frac{b-a}{n}$$
+    </div>
+    <p class="note">Puede probarse que, para funciones dos veces derivables, el error del punto medio suele ser aproximadamente la <em>mitad</em> del error del trapecio, y de signo opuesto — por eso combinar ambos (ponderados 2:1) da origen a la regla de Simpson, que verás en el siguiente módulo.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Visualizador interactivo</h2>
+    <p>Observa cómo los rectángulos quedan centrados sobre la curva, y compara la precisión contra el trapecio del módulo anterior.</p>
+
+    <div class="visualizer-controls">
+      <label>Función
+        <select id="m-fn-select">
+          <option value="rational" selected>f(x) = 1 / (1 + x²)</option>
+          <option value="poly">f(x) = x² + 1</option>
+          <option value="sin">f(x) = sin(x) + 2</option>
+          <option value="sqrt">f(x) = √x</option>
+        </select>
+      </label>
+      <label>a <input type="number" id="m-a-input" value="0" step="0.5"></label>
+      <label>b <input type="number" id="m-b-input" value="2" step="0.5"></label>
+      <label>n = <span id="m-n-value">6</span>
+        <input type="range" id="m-n-slider" min="2" max="30" step="1" value="6">
+      </label>
+    </div>
+
+    <div id="m-plot" class="plot"></div>
+
+    <div class="visualizer-output">
+      <span>Aproximación: <strong id="m-approx-value">-</strong></span>
+      <span>Valor exacto: <strong id="m-exact-value">-</strong></span>
+      <span>Error absoluto: <strong id="m-error-value">-</strong></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Ejemplos resueltos</h2>
+
+    <div class="example-block">
+      <h3>Ejemplo 1 — f(x) = x² + 1 en [0, 4]</h3>
+      <p>Aproximar $\displaystyle\int_0^4 x^2\,dx$ con $n=4$ (compara con el Ejemplo 1 del Módulo 1, misma función y mismo $n$).</p>
+      <div class="step"><span class="step-label">Paso 1 — Puntos medios</span>
+        $$m_1=0.5,\ m_2=1.5,\ m_3=2.5,\ m_4=3.5$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Evaluar $f(x)=x^2$</span>
+        $$f(0.5)=0.25,\ f(1.5)=2.25,\ f(2.5)=6.25,\ f(3.5)=12.25$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Sumar y multiplicar por $h=1$</span>
+        $$M = (0.25+2.25+6.25+12.25)(1) = 21$$</div>
+      <p class="note">Valor exacto: $21.333$. El punto medio (21) queda mucho más cerca que la suma izquierda (14) o derecha (30) del Módulo 1, con el mismo $n=4$.</p>
+    </div>
+
+    <div class="example-block">
+      <h3>Ejemplo 2 — f(x) = 1/x en [1, 3]</h3>
+      <p>Misma integral del Ejemplo 1 del Módulo 2 (trapecio), ahora con punto medio, $n=4$.</p>
+      <div class="step"><span class="step-label">Paso 1 — Puntos medios</span>
+        $$m_1=1.25,\ m_2=1.75,\ m_3=2.25,\ m_4=2.75$$</div>
+      <div class="step"><span class="step-label">Paso 2 — Evaluar $f(x)=1/x$</span>
+        $$f(1.25){=}0.8,\ f(1.75){=}0.5714,\ f(2.25){=}0.4444,\ f(2.75){=}0.3636$$</div>
+      <div class="step"><span class="step-label">Paso 3 — Sumar y multiplicar por $h=0.5$</span>
+        $$M = (0.8+0.5714+0.4444+0.3636)(0.5) = 1.0897$$</div>
+      <p class="note">Valor exacto: $\ln 3\approx 1.0986$. Error $\approx 0.009$, más preciso que el trapecio (error $\approx 0.018$) con el mismo número de subdivisiones.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initVisualizer({ prefix: 'm-', methodType: 'midpoint', hasMode: false, plotId: 'm-plot' });
+  });
+</script>
+
+<footer class="site-footer"><div class="wrap">Proyecto académico · Desarrollo de Software · Fase 1</div></footer>
+</body>
+</html>
